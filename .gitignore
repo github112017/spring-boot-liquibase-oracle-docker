@@ -4,6 +4,10 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+### Liquibase ###
+databasechangelog.csv
+src/main/resources/db/liquibase-spring-boot-liquibase-oracle-docker.sql
+
 ### STS ###
 .apt_generated
 .classpath
