@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1.0.0.1" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="LIVRO" />
+			</not>
+		</preConditions>
+		<comment>Criacao da tabela Livro</comment>
+		<sql>
+			CREATE TABLE "LIVRO" (
+				ID     		NUMBER(19,0) NOT NULL,
+			  	TITULO      VARCHAR2(250 CHAR),
+			  	NM_AUTOR   	VARCHAR2(250 CHAR),
+				DT_CADASTRO DATE DEFAULT sysdate
+			);
+		</sql>
+	</changeSet>
+	
+	<changeSet id="1.0.0.2" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<!-- Maneira mais segura de verificar se existe a sequencia referenciada, evitando excecoes -->
+			<sqlCheck expectedResult="0">
+				SELECT COUNT(1) FROM user_sequences WHERE sequence_name = 'SQ_LIVRO';
+			</sqlCheck>
+		</preConditions>
+		<comment>Criacao da sequência SQ_LIVRO</comment>
+		<sql>
+			CREATE SEQUENCE "SQ_LIVRO" INCREMENT BY 1 START WITH 1 NOORDER NOCYCLE;
+		</sql>
+	</changeSet>
+	
+	<changeSet id="1.0.0.3" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<tableExists tableName="LIVRO" />
+			</and>
+			<and>
+				<not>
+					<columnExists tableName="LIVRO" columnName="ISBN" />
+				</not>
+			</and>
+		</preConditions>
+		<comment>Inserts na tabela Livro</comment>
+		<sql>
+			INSERT INTO LIVRO VALUES (SQ_LIVRO.nextval, 'Madol Duwa', 'Martin Wickramasinghe', sysdate);
+			INSERT INTO LIVRO VALUES (SQ_LIVRO.nextval, 'Gamperaliya', 'Martin Wickramasinghe', sysdate);
+			INSERT INTO LIVRO VALUES (SQ_LIVRO.nextval, '700 Experimentos da Conscienciologia', 'Waldo Vieira', sysdate);
+			INSERT INTO LIVRO VALUES (SQ_LIVRO.nextval, 'Projeciologia', 'Waldo Vieira', sysdate);
+			INSERT INTO LIVRO VALUES (SQ_LIVRO.nextval, 'Projeções da Consciência: Uma Ferramenta Evolutiva', 'Moisés Esagui', sysdate);
+		</sql>
+	</changeSet>
+	
+</databaseChangeLog>
