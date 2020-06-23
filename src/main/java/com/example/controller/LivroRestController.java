@@ -83,6 +83,11 @@ public class LivroRestController {
 			mapErros.put("erros", fieldErrors);
 			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapErros);
+			
+		} finally {
+			// para o garbage collector
+			mapErros = null;
+			fieldErrors = null;
 		}
 	}
 	
