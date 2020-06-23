@@ -20,12 +20,22 @@ public class LivroService {
 	@Autowired
 	private LivroDAO livroDAO;
 	
-	public LivroDTO salvar(LivroDTO dto) {
+	public LivroDTO salvar(LivroDTO dto) throws Exception {
 		
-		Livro livro = converterParaLivro(dto);
-		livro = livroDAO.saveAndFlush(livro);
-		
-		return converterParaLivroDTO(livro);
+		try {
+			Livro livro = converterParaLivro(dto);
+			livro = livroDAO.saveAndFlush(livro);
+			
+			return converterParaLivroDTO(livro);
+			
+		} catch (Exception e) {
+			LoggerFactory.getLogger(this.getClass())
+				.error("ERRO AO TENTAR CADASTRAR LIVRO: " + e);
+			
+			e.printStackTrace();
+			
+			throw e;
+		}
 	}
 	
 	@Transactional(readOnly = true)
@@ -81,6 +91,7 @@ public class LivroService {
 					livro.getDataCadastro());
 			
 			dto.setId(livro.getId());
+			dto.setValorUnitario(livro.getValorUnitario());
 			
 			return dto;
 		}
@@ -93,6 +104,8 @@ public class LivroService {
 		if (dto != null) {
 			Livro livro = new Livro(dto.getTitulo(), 
 					dto.getNomeAutor(), dto.getIsbn());
+			
+			livro.setValorUnitario(dto.getValorUnitario());
 			
 			return livro;
 		}

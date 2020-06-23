@@ -1,7 +1,12 @@
 package com.example.model.dto;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +16,18 @@ public class LivroDTO {
 	private static final SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private Long id;
+	
+	@NotNull(message = "titulo nao pode ser nulo")
+	@NotBlank(message = "titulo nao pode estar em branco")
 	private String titulo;
+	
 	private String nomeAutor;
 	private String isbn;
 	private Date dataCadastro;
+	
+	// essa validacao evita a excecao ORA-01438
+	@DecimalMax(value = "999.99", message = "valorUnitario deve ter precisao de 5 digitos e escala/fracao de 2 digitos (Ex.: 999.99)")
+	private BigDecimal valorUnitario;
 	
 	public LivroDTO(String titulo, String nomeAutor, String isbn, Date dataCadastro) {
 		super();
@@ -67,6 +80,14 @@ public class LivroDTO {
 		this.dataCadastro = dataCadastro;
 	}
 	
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+	
 	@Override
 	public String toString() {
 		
@@ -85,6 +106,7 @@ public class LivroDTO {
 	
 	public static void main(String[] args) {
 		LivroDTO dto = new LivroDTO("Homo Sapiens Pacificus", "Waldo Vieira", "ABC11071234567", new Date());
+		dto.setValorUnitario(new BigDecimal(3330));
 		System.out.println(dto.toString());
 	}
 

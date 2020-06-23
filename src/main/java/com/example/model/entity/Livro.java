@@ -1,5 +1,6 @@
 package com.example.model.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,6 +35,10 @@ public class Livro {
 	
 	@Column(name = "ISBN")
     private String isbn;
+	
+	// atributo/coluna para testar e analisar a excecao ORA-01438. a validacao soh funciona no LivroDTO
+	@Column(name = "VL_UNIT")
+    private BigDecimal valorUnitario;
 	
 	public Livro() {
 		this.dataCadastro = new Date();
@@ -85,6 +90,14 @@ public class Livro {
 
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+	
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
 	}
 	
 }

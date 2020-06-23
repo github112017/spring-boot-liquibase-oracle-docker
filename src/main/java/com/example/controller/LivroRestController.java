@@ -1,11 +1,17 @@
 package com.example.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,9 +50,40 @@ public class LivroRestController {
 	@PostMapping(value = "/cadastrar", 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public LivroDTO cadastrar(@RequestBody LivroDTO livroDTO) {
-		LivroDTO livroCadastrado = livroService.salvar(livroDTO);
-		return livroCadastrado;
+	public ResponseEntity<?> cadastrar(@Valid @RequestBody LivroDTO livroDTO, Errors errors) {
+		
+		Map<String, Map<String, String>> mapErros = new HashMap<String, Map<String, String>>();
+		Map<String, String> fieldErrors = new HashMap<String, String>();
+		
+		try {
+			
+			// antes de cadastrar, verificar se ha erros nos atributos, validados pela anotacao @Valid, do json livroDTO
+			if (errors.hasErrors()) {
+				
+				List<FieldError> erros = errors.getFieldErrors();
+		        for (FieldError e : erros) {
+		        	fieldErrors.put(e.getField(), 
+		        			String.format("%s. Erro -> %s = %s", 
+		        					e.getDefaultMessage(), e.getField(), e.getRejectedValue())
+		        	);
+		        }
+		        
+		        mapErros.put("erros", fieldErrors);
+		        
+		        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapErros);
+			}
+			
+			//cadastrar livro
+			LivroDTO livroCadastrado = livroService.salvar(livroDTO);
+			return ResponseEntity.ok().body(livroCadastrado);
+			
+		} catch (Exception e) {
+			
+			fieldErrors.put("excecao", String.format("Erro ao tentar cadastrar Livro: %s", e.getMessage()));
+			mapErros.put("erros", fieldErrors);
+			
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapErros);
+		}
 	}
 	
 	@DeleteMapping("/{id}")
