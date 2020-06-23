@@ -53,7 +53,7 @@ public class LivroRestController {
 	public ResponseEntity<?> cadastrar(@Valid @RequestBody LivroDTO livroDTO, Errors errors) {
 		
 		Map<String, Map<String, String>> mapErros = new HashMap<String, Map<String, String>>();
-		Map<String, String> fieldErrors = new HashMap<String, String>();
+		Map<String, String> mapErrosDetalhes = new HashMap<String, String>();
 		
 		try {
 			
@@ -62,13 +62,13 @@ public class LivroRestController {
 				
 				List<FieldError> erros = errors.getFieldErrors();
 		        for (FieldError e : erros) {
-		        	fieldErrors.put(e.getField(), 
+		        	mapErrosDetalhes.put(e.getField(), 
 		        			String.format("%s. Erro -> %s = %s", 
 		        					e.getDefaultMessage(), e.getField(), e.getRejectedValue())
 		        	);
 		        }
 		        
-		        mapErros.put("erros", fieldErrors);
+		        mapErros.put("erros", mapErrosDetalhes);
 		        
 		        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapErros);
 			}
@@ -79,15 +79,15 @@ public class LivroRestController {
 			
 		} catch (Exception e) {
 			
-			fieldErrors.put("excecao", String.format("Erro ao tentar cadastrar Livro: %s", e.getMessage()));
-			mapErros.put("erros", fieldErrors);
+			mapErrosDetalhes.put("excecao", String.format("Erro ao tentar cadastrar Livro: %s", e.getMessage()));
+			mapErros.put("erros", mapErrosDetalhes);
 			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapErros);
 			
 		} finally {
 			// para o garbage collector
 			mapErros = null;
-			fieldErrors = null;
+			mapErrosDetalhes = null;
 		}
 	}
 	
