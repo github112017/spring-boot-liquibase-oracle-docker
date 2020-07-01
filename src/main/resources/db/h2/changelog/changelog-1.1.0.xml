@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-	<changeSet id="1.1.0.1" author="Jean Louis">
+	<changeSet dbms="h2" id="1.1.0.1" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="LIVRO" columnName="ISBN" />
@@ -13,11 +13,11 @@
 		</preConditions>
 		<comment>Criacao da coluna 'ISBN'</comment>
 		<sql>
-			ALTER TABLE LIVRO ADD ISBN VARCHAR2(200 CHAR);
+			ALTER TABLE LIVRO ADD ISBN VARCHAR(200);
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.1.0.2" author="Jean Louis">
+	<changeSet dbms="h2" id="1.1.0.2" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="LIVRO" columnName="ISBN_TEMP" />
@@ -25,11 +25,11 @@
 		</preConditions>
 		<comment>Criacao da coluna 'ISBN_TEMP'</comment>
 		<sql>
-			ALTER TABLE LIVRO ADD ISBN_TEMP VARCHAR2(200 CHAR);
+			ALTER TABLE LIVRO ADD ISBN_TEMP VARCHAR(200);
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.1.0.3" author="Jean Louis">
+	<changeSet dbms="h2" id="1.1.0.3" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="LIVRO" columnName="ISBN_TEMP" />
 		</preConditions>
@@ -39,7 +39,7 @@
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.1.0.4" author="Jean Louis">
+	<changeSet dbms="h2" id="1.1.0.4" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<and>
 				<columnExists tableName="LIVRO" columnName="ISBN" />
@@ -58,7 +58,7 @@
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.1.0.5" author="Jean Louis">
+	<changeSet dbms="h2" id="1.1.0.5" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="LIVRO" columnName="ISBN_TEMP" />
 		</preConditions>

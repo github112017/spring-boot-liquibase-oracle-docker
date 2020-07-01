@@ -7,5 +7,5 @@ import com.example.model.entity.Livro;
 
 @Repository
 public interface LivroDAO extends JpaRepository<Livro, Long> {
-
+	
 }

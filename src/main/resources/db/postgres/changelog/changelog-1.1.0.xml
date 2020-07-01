@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<changeSet dbms="postgresql" id="1.1.0.1" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="LIVRO" columnName="ISBN" schemaName="PUBLIC" />
+			</not>
+		</preConditions>
+		<comment>Criacao da coluna 'ISBN'</comment>
+		<sql>
+			ALTER TABLE PUBLIC."LIVRO" ADD ISBN VARCHAR(200);
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="postgresql" id="1.1.0.2" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="LIVRO" columnName="ISBN_TEMP" schemaName="PUBLIC" />
+			</not>
+		</preConditions>
+		<comment>Criacao da coluna 'ISBN_TEMP'</comment>
+		<sql>
+			ALTER TABLE PUBLIC."LIVRO" ADD ISBN_TEMP VARCHAR(200);
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="postgresql" id="1.1.0.3" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="LIVRO" columnName="ISBN_TEMP" schemaName="PUBLIC" />
+		</preConditions>
+		<comment>Inserts na coluna 'ISBN_TEMP'</comment>
+		<sql>
+			UPDATE PUBLIC."LIVRO" SET ISBN_TEMP = 'ABC1234567';
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="postgresql" id="1.1.0.4" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<columnExists tableName="LIVRO" columnName="ISBN" schemaName="PUBLIC" />
+			</and>
+			<and>
+				<columnExists tableName="LIVRO" columnName="ISBN_TEMP" schemaName="PUBLIC" />
+			</and>
+		</preConditions>
+		<comment>
+			Update na coluna 'ISBN' com o valor da coluna 'ISBN_TEMP'. 
+			Este update eh para testar se o preConditions do liquibase reconhece, 
+			apos ter sido rodado o script anteriormente, que a coluna 'ISBN_TEMP' foi deletada
+		</comment>
+		<sql>
+			UPDATE PUBLIC."LIVRO" SET ISBN = ISBN_TEMP;
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="postgresql" id="1.1.0.5" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<columnExists tableName="LIVRO" columnName="ISBN_TEMP" schemaName="PUBLIC" />
+		</preConditions>
+		<comment>Removendo coluna 'ISBN_TEMP'</comment>
+		<sql>
+			ALTER TABLE PUBLIC."LIVRO" DROP COLUMN ISBN_TEMP;
+		</sql>
+	</changeSet>
+	
+</databaseChangeLog>

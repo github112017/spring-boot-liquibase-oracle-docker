@@ -25,6 +25,12 @@ eh preciso antes deletar o arquivo databasechangelog.csv e depois rodar o comand
 - Subir container Docker do Oracle: 
 > docker run -d -p 49161:1521 --name oracle11g -v C:\Softwares\docker-volumes\Oracle-11g:/data oracleinanutshell/oracle-xe-11g
 
+- Subir container Docker do H2:
+> docker run -d -p 1521:1521 -p 81:81 -e H2_OPTIONS='-ifNotExists' --name h2 oscarfonts/h2
+
+- Subir container Docker do Postgres:
+> docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=postgres postgres
+
 - Subir container da aplicacao.
 Obs.: Para que a aplicacao consiga acessar o oracle levantado como container, eh preciso setar o ip utilizado pelo container 
 na propriedade 'spring.datasource.url' (application-docker.properties). No caso do Windows, eh possivel saber usando o comando

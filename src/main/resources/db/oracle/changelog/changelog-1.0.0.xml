@@ -4,8 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-
-    <changeSet id="1.0.0.1" author="Jean Louis">
+                      
+    <changeSet dbms="oracle" id="1.0.0.1" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="LIVRO" />
@@ -22,7 +22,7 @@
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.0.0.2" author="Jean Louis">
+	<changeSet dbms="oracle" id="1.0.0.2" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<!-- Maneira mais segura de verificar se existe a sequencia referenciada, evitando excecoes -->
 			<sqlCheck expectedResult="0">
@@ -35,7 +35,7 @@
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.0.0.3" author="Jean Louis">
+	<changeSet dbms="oracle" id="1.0.0.3" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<and>
 				<tableExists tableName="LIVRO" />

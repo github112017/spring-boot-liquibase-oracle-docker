@@ -6,7 +6,6 @@ import java.util.Date;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +16,7 @@ public class LivroDTO {
 	
 	private Long id;
 	
-	@NotNull(message = "titulo nao pode ser nulo")
-	@NotBlank(message = "titulo nao pode estar em branco")
+	@NotBlank(message = "titulo nao pode ser nulo ou estar vazio")
 	private String titulo;
 	
 	private String nomeAutor;

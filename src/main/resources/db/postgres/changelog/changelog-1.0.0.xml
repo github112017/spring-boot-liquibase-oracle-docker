@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet dbms="postgresql" id="1.0.0.1" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="LIVRO" schemaName="PUBLIC" />
+			</not>
+		</preConditions>
+		<comment>Criacao da tabela Livro</comment>
+		<sql>
+			CREATE TABLE "LIVRO" (
+				ID     		NUMERIC(19,0) NOT NULL,
+			  	TITULO      VARCHAR(250),
+			  	NM_AUTOR   	VARCHAR(250),
+				DT_CADASTRO DATE DEFAULT NOW()
+			);
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="postgresql" id="1.0.0.2" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<!-- Maneira mais segura de verificar se existe a sequencia referenciada, evitando excecoes -->
+			<sqlCheck expectedResult="0">
+				SELECT COUNT(1) FROM pg_class WHERE relname = 'SQ_LIVRO';
+			</sqlCheck>
+		</preConditions>
+		<comment>Criacao da sequencia SQ_LIVRO</comment>
+		<sql>
+			CREATE SEQUENCE "SQ_LIVRO" INCREMENT BY 1 START WITH 1 NO CYCLE;
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="postgresql" id="1.0.0.3" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<tableExists tableName="LIVRO" schemaName="PUBLIC" />
+			</and>
+			<and>
+				<not>
+					<columnExists tableName="LIVRO" columnName="ISBN" schemaName="PUBLIC" />
+				</not>
+			</and>
+		</preConditions>
+		<comment>Inserts na tabela Livro</comment>
+		<sql>
+			INSERT INTO PUBLIC."LIVRO" VALUES (NEXTVAL('"public"."SQ_LIVRO"'), 'Madol Duwa', 'Martin Wickramasinghe', NOW());
+			INSERT INTO PUBLIC."LIVRO" VALUES (NEXTVAL('"public"."SQ_LIVRO"'), 'Gamperaliya', 'Martin Wickramasinghe', NOW());
+			INSERT INTO PUBLIC."LIVRO" VALUES (NEXTVAL('"public"."SQ_LIVRO"'), '700 Experimentos da Conscienciologia', 'Waldo Vieira', NOW());
+			INSERT INTO PUBLIC."LIVRO" VALUES (NEXTVAL('"public"."SQ_LIVRO"'), 'Projeciologia', 'Waldo Vieira', NOW());
+			INSERT INTO PUBLIC."LIVRO" VALUES (NEXTVAL('"public"."SQ_LIVRO"'), 'Projeções da Consciência: Uma Ferramenta Evolutiva', 'Moisés Esagui', NOW());
+		</sql>
+	</changeSet>
+	
+</databaseChangeLog>

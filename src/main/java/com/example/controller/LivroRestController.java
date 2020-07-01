@@ -70,7 +70,7 @@ public class LivroRestController {
 		        
 		        mapErros.put("erros", mapErrosDetalhes);
 		        
-		        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapErros);
+		        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(mapErros);
 			}
 			
 			//cadastrar livro

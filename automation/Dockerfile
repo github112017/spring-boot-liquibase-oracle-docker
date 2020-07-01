@@ -6,4 +6,4 @@ RUN mv *.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=docker","app.jar"]
+ENTRYPOINT ["java", "-Xmx2g", "-jar", "-Dspring.profiles.active=docker", "app.jar"]

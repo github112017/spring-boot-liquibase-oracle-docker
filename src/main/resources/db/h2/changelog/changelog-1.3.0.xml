@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-	<changeSet id="1.3.0.1" author="Jean Louis">
+	<changeSet dbms="h2" id="1.3.0.1" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<columnExists tableName="LIVRO" columnName="VL_UNIT" />
@@ -13,11 +13,11 @@
 		</preConditions>
 		<comment>Criacao da coluna 'VL_UNIT'</comment>
 		<sql>
-			ALTER TABLE LIVRO ADD VL_UNIT NUMBER(5,2);
+			ALTER TABLE LIVRO ADD VL_UNIT DECIMAL(5,2);
 		</sql>
 	</changeSet>
 	
-	<changeSet id="1.3.0.2" author="Jean Louis">
+	<changeSet dbms="h2" id="1.3.0.2" author="Jean Louis">
 		<preConditions onFail="MARK_RAN">
 			<columnExists tableName="LIVRO" columnName="VL_UNIT" />
 		</preConditions>

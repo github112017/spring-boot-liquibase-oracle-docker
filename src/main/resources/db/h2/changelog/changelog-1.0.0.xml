@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet dbms="h2" id="1.0.0.1" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="LIVRO" />
+			</not>
+		</preConditions>
+		<comment>Criacao da tabela Livro</comment>
+		<sql>
+			CREATE TABLE "LIVRO" (
+				ID     		LONG NOT NULL,
+			  	TITULO      VARCHAR(250),
+			  	NM_AUTOR   	VARCHAR(250),
+				DT_CADASTRO TIMESTAMP DEFAULT CURRENT_DATE
+			);
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="h2" id="1.0.0.2" author="Jean Louis">
+		<comment>Criacao da sequencia SQ_LIVRO</comment>
+		<sql>
+			CREATE SEQUENCE IF NOT EXISTS "SQ_LIVRO" START WITH 1 INCREMENT BY 1 NO CYCLE;
+		</sql>
+	</changeSet>
+	
+	<changeSet dbms="h2" id="1.0.0.3" author="Jean Louis">
+		<preConditions onFail="MARK_RAN">
+			<and>
+				<tableExists tableName="LIVRO" />
+			</and>
+			<and>
+				<not>
+					<columnExists tableName="LIVRO" columnName="ISBN" />
+				</not>
+			</and>
+		</preConditions>
+		<comment>Inserts na tabela Livro</comment>
+		<sql>
+			INSERT INTO LIVRO VALUES (NEXTVAL('SQ_LIVRO'), 'Madol Duwa', 'Martin Wickramasinghe', CURRENT_DATE);
+			INSERT INTO LIVRO VALUES (NEXTVAL('SQ_LIVRO'), 'Gamperaliya', 'Martin Wickramasinghe', CURRENT_DATE);
+			INSERT INTO LIVRO VALUES (NEXTVAL('SQ_LIVRO'), '700 Experimentos da Conscienciologia', 'Waldo Vieira', CURRENT_DATE);
+			INSERT INTO LIVRO VALUES (NEXTVAL('SQ_LIVRO'), 'Projeciologia', 'Waldo Vieira', CURRENT_DATE);
+			INSERT INTO LIVRO VALUES (NEXTVAL('SQ_LIVRO'), 'Projeções da Consciência: Uma Ferramenta Evolutiva', 'Moisés Esagui', CURRENT_DATE);
+		</sql>
+	</changeSet>
+	
+</databaseChangeLog>
