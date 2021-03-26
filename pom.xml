@@ -70,7 +70,6 @@
 					<driver>oracle.jdbc.OracleDriver</driver>
 					<migrationSqlOutputFile>src/main/resources/db/liquibase-${project.name}.sql</migrationSqlOutputFile>
 					<outputFileEncoding>UTF-8</outputFileEncoding>
-					<outputLiquibaseSql>all</outputLiquibaseSql>
 				</configuration>
 				<executions>
 					<execution>
